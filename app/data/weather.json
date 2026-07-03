@@ -1,0 +1,46 @@
+{
+  "coord": {
+    "lon": 120.8934,
+    "lat": 14.3936
+  },
+  "weather": [
+    {
+      "id": 804,
+      "main": "Clouds",
+      "description": "overcast clouds",
+      "icon": "04n"
+    }
+  ],
+  "base": "stations",
+  "main": {
+    "temp": 303.12,
+    "feels_like": 309.9,
+    "temp_min": 303.12,
+    "temp_max": 303.16,
+    "pressure": 1012,
+    "humidity": 77,
+    "sea_level": 1012,
+    "grnd_level": 1003
+  },
+  "visibility": 10000,
+  "wind": {
+    "speed": 4.93,
+    "deg": 146,
+    "gust": 6.64
+  },
+  "clouds": {
+    "all": 90
+  },
+  "dt": 1783083266,
+  "sys": {
+    "type": 2,
+    "id": 2037715,
+    "country": "PH",
+    "sunrise": 1783027898,
+    "sunset": 1783074549
+  },
+  "timezone": 28800,
+  "id": 1713014,
+  "name": "General Trias",
+  "cod": 200
+}
