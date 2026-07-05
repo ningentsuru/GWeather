@@ -3,9 +3,15 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
 import { z } from 'zod'
 
-const { getCityWeather } = useApi()
+import type { WeatherResponse } from '@/types'
 
-const emit = defineEmits(['get-weather'])
+const { getCityWeather } = useApi()
+const { loggedIn } = useUserSession()
+const { setItem } = useLocalStorage()
+
+const weather = useState<WeatherResponse>('weather')
+
+const needCredentials = ref<boolean>(false)
 
 const formSchema = toTypedSchema(
   z.object({
@@ -15,19 +21,29 @@ const formSchema = toTypedSchema(
   }),
 )
 
-const { handleSubmit, isSubmitting } = useForm({
+const { handleSubmit, isSubmitting, setFieldTouched, validateField } = useForm({
   validationSchema: formSchema,
 })
 
+defineExpose({
+  setFieldTouched,
+  validateField,
+})
+
 const onSubmit = handleSubmit(async (values) => {
-  emit('get-weather', await getCityWeather(values))
+  if (weather.value.city && !loggedIn.value) {
+    needCredentials.value = true
+    return
+  }
+  weather.value = (await getCityWeather(values)) as WeatherResponse
+  setItem('weather', JSON.stringify(weather.value))
 })
 </script>
 
 <template>
-  <Card>
+  <Card class="weather-search-city">
     <CardHeader>
-      <CardTitle>Search by City</CardTitle>
+      <CardTitle class="text-2xl">Search by City</CardTitle>
       <CardDescription> Enter a city name to retrieve current weather conditions. </CardDescription>
     </CardHeader>
     <CardContent>
@@ -46,6 +62,13 @@ const onSubmit = handleSubmit(async (values) => {
             <FormMessage />
           </FormItem>
         </FormField>
+
+        <ErrorMessage :show="needCredentials">
+          <p>
+            You need to <NuxtLink to="/login" class="underline">login</NuxtLink> to search the
+            weather
+          </p>
+        </ErrorMessage>
         <Button type="submit" class="cursor-pointer" :disabled="isSubmitting">
           <span v-if="isSubmitting" class="mr-2 animate-spin">⟳</span>
           {{ isSubmitting ? 'Searching...' : 'Get Weather' }}

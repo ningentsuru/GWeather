@@ -1,37 +1,72 @@
 <script setup lang="ts">
-interface WeatherObject {
-  city: string
-  icon: string
-  temp: number
-  description: string
-  fetchedAt: string
-}
-const weather = ref({
+import { useRouter } from 'vue-router'
+import type { WeatherResponse, Coord } from '@/types'
+
+const router = useRouter()
+
+const { getItem } = useLocalStorage()
+
+const coordinates = useState<Coord>('coordinates', () => ({
+  lat: 0,
+  lon: 0,
+}))
+
+const weather = useState<WeatherResponse>('weather', () => ({
   city: '',
-  icon: '',
-  temp: 0,
+  country: '',
   description: '',
-  fetchedAt: '',
-})
-const handleGetWeather = (payload: WeatherObject) => {
-  weather.value = payload
+  dt: 0,
+  createdAt: '',
+  icon: '',
+  main: '',
+  sunrise: 0,
+  sunset: 0,
+  temp: 0,
+  timezone: 0,
+}))
+
+const handleUnlock = (value: string) => {
+  const to = value === 'weather-current-location' ? '/login' : undefined
+
+  if (to) {
+    router.push(to)
+  }
 }
+
+onMounted(() => {
+  if (import.meta.client) {
+    const storedCoordinates = getItem('coordinates')
+    const storedWeather = getItem('weather')
+
+    if (storedCoordinates) {
+      coordinates.value = JSON.parse(storedCoordinates)
+    }
+
+    if (storedWeather) {
+      weather.value = JSON.parse(storedWeather)
+    }
+  }
+})
 </script>
 
 <template>
-  <div class="current-weather">
-    <Card>
-      <CardContent class="flex flex-col-reverse gap-4 md:grid md:grid-cols-3 md:gap-4">
-        <SearchCity @get-weather="handleGetWeather" />
-        <WeatherCurrentLocation @get-weather="handleGetWeather" />
-        <WeatherWidget
-          :city="weather.city"
-          :icon="weather.icon"
-          :temp="weather.temp"
-          :description="weather.description"
-          :fetchedAt="weather.fetchedAt"
-        />
-      </CardContent>
-    </Card>
-  </div>
+  <Card class="current-weather">
+    <CardContent class="flex flex-col-reverse gap-4 lg:grid lg:grid-cols-3 lg:gap-4">
+      <WeatherSearchCity />
+      <WeatherCurrentLocation @unlock="handleUnlock($event)" />
+      <WeatherWidget
+        :city="weather.city"
+        :country="weather.country"
+        :description="weather.description"
+        :dt="weather.dt"
+        :createdAt="weather.createdAt"
+        :icon="weather.icon"
+        :main="weather.main"
+        :sunrise="weather.sunrise"
+        :sunset="weather.sunset"
+        :temp="weather.temp"
+        :timezone="weather.timezone"
+      />
+    </CardContent>
+  </Card>
 </template>
