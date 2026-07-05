@@ -61,7 +61,7 @@ const sunsetTime = computed(() => formatTime(props.sunset))
         <CardTitle class="text-md sm:text-2xl"> Weather Information </CardTitle>
       </CardHeader>
 
-      <CardContent class="bg-foreground flex h-50 gap-4 rounded-xl border sm:h-40">
+      <CardContent class="bg-foreground flex h-40 gap-4 rounded-xl border">
         <div
           class="text-background/80 flex w-full flex-col items-start justify-center gap-3 text-sm"
         >

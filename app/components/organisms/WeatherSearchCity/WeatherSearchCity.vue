@@ -43,7 +43,7 @@ const onSubmit = handleSubmit(async (values) => {
 <template>
   <Card class="weather-search-city">
     <CardHeader>
-      <CardTitle class="text-2xl">Search by City</CardTitle>
+      <CardTitle class="text-md sm:text-2xl">Search by City</CardTitle>
       <CardDescription> Enter a city name to retrieve current weather conditions. </CardDescription>
     </CardHeader>
     <CardContent>

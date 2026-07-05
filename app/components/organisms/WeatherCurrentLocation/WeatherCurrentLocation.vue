@@ -90,20 +90,22 @@ watch(
   >
     <template #card-header>
       <CardHeader>
-        <CardTitle class="text-2xl">Weather at Your Location</CardTitle>
+        <CardTitle class="text-md sm:text-2xl">Weather at Your Location</CardTitle>
       </CardHeader>
     </template>
     <CardContent>
-      <p v-if="coords.latitude && coords.latitude !== Number.POSITIVE_INFINITY">
+      <CardDescription v-if="coords.latitude && coords.latitude !== Number.POSITIVE_INFINITY">
         <span class="font-semibold">Latitude:</span> {{ coords.latitude }}<br />
         <span class="font-semibold">Longitude:</span> {{ coords.longitude }}
-      </p>
-      <p v-else-if="error" class="text-destructive">
+      </CardDescription>
+      <CardDescription v-else-if="error" class="text-destructive">
         {{ error.message }}
-      </p>
-      <p v-else class="text-muted-foreground">Click the button below to allow location access.</p>
+      </CardDescription>
+      <CardDescription v-else class="text-muted-foreground">
+        Click the button below to allow location access.
+      </CardDescription>
     </CardContent>
-    <CardFooter class="flex flex-row lg:flex-col items-start gap-2">
+    <CardFooter class="flex flex-col items-start gap-2">
       <Button
         class="cursor-pointer"
         :variant="isTracking && !isPause ? 'destructive' : 'outline'"
