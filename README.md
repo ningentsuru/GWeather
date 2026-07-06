@@ -5,7 +5,7 @@
 1. Environment Configuration: Duplicate the `.env.example` file, rename the copy to `.env`, and open it. Locate the `OPENWEATHER_API_KEY` variable and assign your API key:
 
 ```bash
-OPENWEATHER_API_KEY=5796abbde9106b7da4febfae8c44c232
+OPENWEATHER_API_KEY=
 ```
 
 2. Start Development Server: Execute the following command in your IDE terminal to install dependencies (if needed) and launch the server:
